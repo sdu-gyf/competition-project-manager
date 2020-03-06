@@ -1,6 +1,6 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
-import cn.edu.sdu.ise.labs.dao.CompetitionEventMapper;
+import cn.edu.sdu.ise.labs.dao.CompetitionEventExtMapper;
 import cn.edu.sdu.ise.labs.dto.CompetitionEventDTO;
 import cn.edu.sdu.ise.labs.service.CompetitionEventService;
 import cn.edu.sdu.ise.labs.vo.CompetitionEventVO;
@@ -11,7 +11,7 @@ import java.util.List;
 public class CompetitionServiceImpl implements CompetitionEventService {
 
     @Autowired
-    private CompetitionEventMapper competitionEventMapper;
+    private CompetitionEventExtMapper competitionEventExtMapper;
 
     @Override
     public CompetitionEventVO getAthlete(String eventCode) {

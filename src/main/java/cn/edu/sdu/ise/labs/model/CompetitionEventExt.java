@@ -11,7 +11,7 @@ import java.util.Date;
  * @date 2020-3-5
  */
 @Data
-public class CompetitionEvent {
+public class CompetitionEventExt {
     /**
      * 主键id
      */

@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.sdu.ise.labs.dao.KeyMaxValueMapper">
-  <resultMap id="BaseResultMap" type="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tenant_code" jdbcType="VARCHAR" property="tenantCode" />
-    <result column="key_prefix" jdbcType="CHAR" property="keyPrefix" />
-    <result column="date_part" jdbcType="CHAR" property="datePart" />
-    <result column="current_value" jdbcType="INTEGER" property="currentValue" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.edu.sdu.ise.labs.dao.KeyMaxValueMapper" >
+  <resultMap id="BaseResultMap" type="cn.edu.sdu.ise.labs.model.KeyMaxValue" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR" />
+    <result column="key_prefix" property="keyPrefix" jdbcType="CHAR" />
+    <result column="date_part" property="datePart" jdbcType="CHAR" />
+    <result column="current_value" property="currentValue" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
   </resultMap>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     id, tenant_code, key_prefix, date_part, current_value, updated_at
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from key_max_value
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from key_max_value
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
+  <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue" >
     insert into key_max_value (id, tenant_code, key_prefix, 
       date_part, current_value, updated_at
       )
@@ -30,71 +30,71 @@
       #{datePart,jdbcType=CHAR}, #{currentValue,jdbcType=INTEGER}, #{updatedAt,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
+  <insert id="insertSelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue" >
     insert into key_max_value
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="tenantCode != null">
+      <if test="tenantCode != null" >
         tenant_code,
       </if>
-      <if test="keyPrefix != null">
+      <if test="keyPrefix != null" >
         key_prefix,
       </if>
-      <if test="datePart != null">
+      <if test="datePart != null" >
         date_part,
       </if>
-      <if test="currentValue != null">
+      <if test="currentValue != null" >
         current_value,
       </if>
-      <if test="updatedAt != null">
+      <if test="updatedAt != null" >
         updated_at,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="tenantCode != null">
+      <if test="tenantCode != null" >
         #{tenantCode,jdbcType=VARCHAR},
       </if>
-      <if test="keyPrefix != null">
+      <if test="keyPrefix != null" >
         #{keyPrefix,jdbcType=CHAR},
       </if>
-      <if test="datePart != null">
+      <if test="datePart != null" >
         #{datePart,jdbcType=CHAR},
       </if>
-      <if test="currentValue != null">
+      <if test="currentValue != null" >
         #{currentValue,jdbcType=INTEGER},
       </if>
-      <if test="updatedAt != null">
+      <if test="updatedAt != null" >
         #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
+  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue" >
     update key_max_value
-    <set>
-      <if test="tenantCode != null">
+    <set >
+      <if test="tenantCode != null" >
         tenant_code = #{tenantCode,jdbcType=VARCHAR},
       </if>
-      <if test="keyPrefix != null">
+      <if test="keyPrefix != null" >
         key_prefix = #{keyPrefix,jdbcType=CHAR},
       </if>
-      <if test="datePart != null">
+      <if test="datePart != null" >
         date_part = #{datePart,jdbcType=CHAR},
       </if>
-      <if test="currentValue != null">
+      <if test="currentValue != null" >
         current_value = #{currentValue,jdbcType=INTEGER},
       </if>
-      <if test="updatedAt != null">
+      <if test="updatedAt != null" >
         updated_at = #{updatedAt,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
+  <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue" >
     update key_max_value
     set tenant_code = #{tenantCode,jdbcType=VARCHAR},
       key_prefix = #{keyPrefix,jdbcType=CHAR},
@@ -103,29 +103,4 @@
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tenant_code" jdbcType="VARCHAR" property="tenantCode" />
-    <result column="key_prefix" jdbcType="CHAR" property="keyPrefix" />
-    <result column="date_part" jdbcType="CHAR" property="datePart" />
-    <result column="current_value" jdbcType="INTEGER" property="currentValue" />
-    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, tenant_code, key_prefix, date_part, current_value, updated_at
-  </sql>
-
-  <!-- 根据前缀查询当前值 -->
-  <select id="getKeyValue" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from key_max_value
-    where key_prefix = #{keyPrefix} and date_part=#{datePart} and tenant_code = #{tenantCode}
-  </select>
-
-  <insert id="insertAndUpdate" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-    insert into key_max_value(tenant_code, key_prefix, date_part, current_value)
-    values(#{tenantCode},#{keyPrefix},#{datePart}, #{currentValue})
-    on duplicate key update current_value = current_value + 1
-  </insert>
 </mapper>
