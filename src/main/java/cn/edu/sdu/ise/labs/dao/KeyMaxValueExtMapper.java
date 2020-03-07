@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @Author: lishikuan
  * @Date: Created on 2019/5/11
  */
-@Component(value = "keyMaxValueMapper")
+@Component(value = "keyMaxValueExtMapper")
 public interface KeyMaxValueExtMapper {
     /**
      * 根据前缀查询当前值

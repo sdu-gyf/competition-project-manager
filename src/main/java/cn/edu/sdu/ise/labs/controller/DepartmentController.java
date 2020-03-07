@@ -22,7 +22,24 @@ import java.util.List;
 public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
+    /**
+     * JAVA_HOME = C:
+     * name = ${JAVA_HOME}/home
+     *
+     * name  = C:/home
+     *
+     * a = depart
+     * b = a+"ment"
+     *
+     * b = "department"
+     */
 
+    /**
+     * 前端来的数据 => DTO => VO
+     *
+     * @param departmentDTO
+     * @return
+     */
     @PostMapping("add")
     public ResultContext add(@RequestBody DepartmentDTO departmentDTO) {
         return ResultContext.returnSuccess(departmentService.addDepartment(departmentDTO));

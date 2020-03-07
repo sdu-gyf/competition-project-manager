@@ -2,11 +2,9 @@ package cn.edu.sdu.ise.labs.service;
 
 import cn.edu.sdu.ise.labs.dto.CompetitionEventDTO;
 import cn.edu.sdu.ise.labs.vo.CompetitionEventVO;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component(value = "competitionEventService")
 public interface CompetitionEventService {
     /**
      * 根据检索条件查询比赛项目表（athlete），返回结果记录

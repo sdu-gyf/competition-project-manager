@@ -1,177 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.edu.sdu.ise.labs.dao.DepartmentMapper" >
-  <resultMap id="BaseResultMap" type="cn.edu.sdu.ise.labs.model.Department" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR" />
-    <result column="department_code" property="departmentCode" jdbcType="VARCHAR" />
-    <result column="department_name" property="departmentName" jdbcType="VARCHAR" />
-    <result column="contact" property="contact" jdbcType="VARCHAR" />
-    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
-    <result column="description" property="description" jdbcType="VARCHAR" />
-    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
-    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
-    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
-    <result column="updated_by" property="updatedBy" jdbcType="VARCHAR" />
-    <result column="deleted" property="deleted" jdbcType="TINYINT" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, tenant_code, department_code, department_name, contact, contact_phone, description, 
+<mapper namespace="cn.edu.sdu.ise.labs.dao.DepartmentMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.sdu.ise.labs.model.Department">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="tenant_code" property="tenantCode" jdbcType="VARCHAR"/>
+        <result column="department_code" property="departmentCode" jdbcType="VARCHAR"/>
+        <result column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="contact" property="contact" jdbcType="VARCHAR"/>
+        <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="deleted" property="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, tenant_code, department_code, department_name, contact, contact_phone, description,
     created_at, updated_at, created_by, updated_by, deleted
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from department
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from department
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.Department" >
-    insert into department (id, tenant_code, department_code, 
-      department_name, contact, contact_phone, 
-      description, created_at, updated_at, 
-      created_by, updated_by, deleted
-      )
-    values (#{id,jdbcType=INTEGER}, #{tenantCode,jdbcType=VARCHAR}, #{departmentCode,jdbcType=VARCHAR}, 
-      #{departmentName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, 
-      #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR}, #{deleted,jdbcType=TINYINT}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="cn.edu.sdu.ise.labs.model.Department" >
-    insert into department
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="tenantCode != null" >
-        tenant_code,
-      </if>
-      <if test="departmentCode != null" >
-        department_code,
-      </if>
-      <if test="departmentName != null" >
-        department_name,
-      </if>
-      <if test="contact != null" >
-        contact,
-      </if>
-      <if test="contactPhone != null" >
-        contact_phone,
-      </if>
-      <if test="description != null" >
-        description,
-      </if>
-      <if test="createdAt != null" >
-        created_at,
-      </if>
-      <if test="updatedAt != null" >
-        updated_at,
-      </if>
-      <if test="createdBy != null" >
-        created_by,
-      </if>
-      <if test="updatedBy != null" >
-        updated_by,
-      </if>
-      <if test="deleted != null" >
-        deleted,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="tenantCode != null" >
-        #{tenantCode,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentCode != null" >
-        #{departmentCode,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentName != null" >
-        #{departmentName,jdbcType=VARCHAR},
-      </if>
-      <if test="contact != null" >
-        #{contact,jdbcType=VARCHAR},
-      </if>
-      <if test="contactPhone != null" >
-        #{contactPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null" >
-        #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null" >
-        #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createdBy != null" >
-        #{createdBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedBy != null" >
-        #{updatedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null" >
-        #{deleted,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.edu.sdu.ise.labs.model.Department" >
-    update department
-    <set >
-      <if test="tenantCode != null" >
-        tenant_code = #{tenantCode,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentCode != null" >
-        department_code = #{departmentCode,jdbcType=VARCHAR},
-      </if>
-      <if test="departmentName != null" >
-        department_name = #{departmentName,jdbcType=VARCHAR},
-      </if>
-      <if test="contact != null" >
-        contact = #{contact,jdbcType=VARCHAR},
-      </if>
-      <if test="contactPhone != null" >
-        contact_phone = #{contactPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="description != null" >
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createdAt != null" >
-        created_at = #{createdAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updatedAt != null" >
-        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createdBy != null" >
-        created_by = #{createdBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updatedBy != null" >
-        updated_by = #{updatedBy,jdbcType=VARCHAR},
-      </if>
-      <if test="deleted != null" >
-        deleted = #{deleted,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.Department" >
-    update department
-    set tenant_code = #{tenantCode,jdbcType=VARCHAR},
-      department_code = #{departmentCode,jdbcType=VARCHAR},
-      department_name = #{departmentName,jdbcType=VARCHAR},
-      contact = #{contact,jdbcType=VARCHAR},
-      contact_phone = #{contactPhone,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR},
-      created_at = #{createdAt,jdbcType=TIMESTAMP},
-      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      created_by = #{createdBy,jdbcType=VARCHAR},
-      updated_by = #{updatedBy,jdbcType=VARCHAR},
-      deleted = #{deleted,jdbcType=TINYINT}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+    </sql>
+
+    <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.Department">
+        insert into department (id, tenant_code, department_code,
+                                department_name, contact, contact_phone,
+                                description, created_by, updated_by)
+        values (#{id,jdbcType=INTEGER}, #{tenantCode,jdbcType=VARCHAR}, #{departmentCode,jdbcType=VARCHAR},
+                #{departmentName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
+                #{description,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.Department">
+        update department
+        set department_name = #{departmentName,jdbcType=VARCHAR},
+            contact         = #{contact,jdbcType=VARCHAR},
+            contact_phone   = #{contactPhone,jdbcType=VARCHAR},
+            description     = #{description,jdbcType=VARCHAR},
+            updated_by      = #{updatedBy,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 获取名字个数(分页) -->
+    <select id="count" resultType="integer">
+        select count(*)
+        from department
+        <where>
+            <if test="queryDTO.departmentName != null">
+                department_name like #{queryDTO.departmentName}
+            </if>
+            and tenant_code = #{tenantCode}
+            and deleted = 0
+        </where>
+    </select>
+
+    <!-- 获取部门(分页) -->
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        <where>
+            <if test="queryDTO.departmentName != null">
+                department_name like #{queryDTO.departmentName}
+            </if>
+            and tenant_code = #{tenantCode}
+            and deleted = 0
+        </where>
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 获取部门列表(分页) -->
+    <select id="getByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        where
+        department_code=#{departmentCode}
+        and tenant_code = #{tenantCode}
+        and deleted = 0
+    </select>
+
+    <!-- 批量删除 -->
+    <update id="deleteByCodes">
+        update department
+        set deleted = 1, updated_by=#{teacherCode}
+        where department_code in
+        <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 根据代码列表获取部门列表 -->
+    <select id="listByCodes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        where department_code in
+        <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and tenant_code = #{tenantCode}
+        and deleted = 0
+    </select>
+
+    <!-- 根据代码列表获取部门列表 -->
+    <select id="listByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        where
+        <if test="departmentName!=null">
+            department_name like #{departmentName}
+        </if>
+        and tenant_code = #{tenantCode}
+        and deleted = 0
+    </select>
+
+
 </mapper>
