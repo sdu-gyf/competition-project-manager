@@ -26,4 +26,8 @@ public class TeamDTO {
      * 备注
      */
     private String description;
+    /**
+     * 队伍编号
+     */
+    private String teamCode;
 }

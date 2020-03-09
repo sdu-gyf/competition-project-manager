@@ -46,5 +46,5 @@ public interface TeamService {
      * @param teamCodes
      * @return
      */
-    Long deleteTeam(List<String> teamCodes);
+    int deleteTeam(List<String> teamCodes);
 }
