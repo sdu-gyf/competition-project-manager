@@ -25,6 +25,7 @@ public class TeamUtils {
     }
 
     public static String delete(String teamCode) {
+        // TODO: 2020/3/10 当有运动员当时候不能删除队伍
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamCodeEqualTo(teamCode);
