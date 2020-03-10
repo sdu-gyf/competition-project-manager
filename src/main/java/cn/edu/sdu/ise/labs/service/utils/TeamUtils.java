@@ -7,21 +7,31 @@ import cn.edu.sdu.ise.labs.utils.FormatUtils;
 import cn.edu.sdu.ise.labs.vo.TeamVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
+@Component
 public class TeamUtils {
 
-
     @Autowired
-    private static TeamMapper teamMapper;
+    private TeamMapper teamMapper;
+
+    private static TeamMapper teamMapperNew;
+
+    @PostConstruct
+    public void init() {
+        teamMapperNew = teamMapper;
+    }
 
     public static String delete(String teamCode) {
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamCodeEqualTo(teamCode);
-        int result = teamMapper.deleteByExample(teamExample);
+        int result = teamMapperNew.deleteByExample(teamExample);
         if (result != 1) {
             // TODO: 2020/3/9 删除失败 异常处理
-            throw new RuntimeException("删除失败");
+            throw new RuntimeException("删除失败或该队伍不存在");
         }
         return null;
     }

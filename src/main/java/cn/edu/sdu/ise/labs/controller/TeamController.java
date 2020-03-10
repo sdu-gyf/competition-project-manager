@@ -23,12 +23,12 @@ public class TeamController {
     @GetMapping("list")
     public ResultContext listTeam(String teamName,
                                   String province,
-                                  String contanct) {
+                                  String contact) {
 
         TeamDTO teamDTO = new TeamDTO();
         teamDTO.setTeamName(teamName);
         teamDTO.setProvince(province);
-        teamDTO.setContact(contanct);
+        teamDTO.setContact(contact);
         return ResultContext.returnSuccess(teamService.listTeam(teamDTO));
     }
 

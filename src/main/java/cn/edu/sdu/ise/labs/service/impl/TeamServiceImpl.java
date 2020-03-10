@@ -44,8 +44,8 @@ public class TeamServiceImpl implements TeamService {
     public List<TeamVO> listTeam(TeamDTO teamDTO) {
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
-                .andTeamCodeEqualTo(teamDTO.getTeamName())
-                .andProvinceGreaterThanOrEqualTo(teamDTO.getProvince())
+                .andTeamNameEqualTo(teamDTO.getTeamName())
+                .andProvinceEqualTo(teamDTO.getProvince())
                 .andContactEqualTo(teamDTO.getContact());
         List<Team> teamList = teamMapper.selectByExample(teamExample);
         return teamList.stream()
@@ -59,7 +59,7 @@ public class TeamServiceImpl implements TeamService {
         teamExample.createCriteria()
                 .andTeamNameEqualTo(teamDTO.getTeamName());
         List<Team> teamList = teamMapper.selectByExample(teamExample);
-        if (teamList != null) {
+        if (teamList.size() > 0) {
             // TODO: 2020/3/9 队名已存在的异常处理。
             throw new RuntimeException("队名已存在");
         } else {
@@ -92,9 +92,9 @@ public class TeamServiceImpl implements TeamService {
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamCodeEqualTo(teamDTO.getTeamCode());
-        int result = teamMapper.updateByExample(team, teamExample);
+        int result = teamMapper.updateByExampleSelective(team, teamExample);
         if (result != 1) {
-            // TODO: 2020/3/9 异常处理
+            // TODO: 2020/3/9 update失败的异常处理。
             throw new RuntimeException("更新失败");
         } else {
             return teamDTO.getTeamCode();

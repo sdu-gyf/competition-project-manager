@@ -1,8 +1,10 @@
 package cn.edu.sdu.ise.labs;
 
+import cn.edu.sdu.ise.labs.service.utils.TeamUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -13,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @SpringBootApplication
 @EnableAsync
+@Import(TeamUtils.class)
 @MapperScan("cn.edu.sdu.ise.labs.dao")
 
 public class LabsApplication {
