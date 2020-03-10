@@ -25,7 +25,6 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamVO getTeam(String teamCode) {
         if (teamCode == null) {
-            // TODO: 2020/3/9  异常处理 teamCode为空的时候默认返回所有，此时不分页。
             throw new RuntimeException("请输入队伍号码");
         }
         TeamExample teamExample = new TeamExample();
@@ -41,7 +40,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamVO> listTeam(TeamDTO teamDTO) {
-        // TODO: 2020/3/10  当teamName province contact为空的时候模糊查询
+        // TODO: 2020/3/10  当teamName province contact为空的时候模糊查询 此时分页 增加对各项参数非空以及合法性的查验。
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamNameEqualTo(teamDTO.getTeamName())
@@ -55,6 +54,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public String addTeam(TeamDTO teamDTO) {
+        // TODO: 2020/3/10 增加对各项参数非空以及合法性的查验，改进随机生成teamCode算法。
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamNameEqualTo(teamDTO.getTeamName());
@@ -92,7 +92,6 @@ public class TeamServiceImpl implements TeamService {
                 .andTeamCodeEqualTo(teamDTO.getTeamCode());
         int result = teamMapper.updateByExampleSelective(team, teamExample);
         if (result != 1) {
-            // TODO: 2020/3/9 update失败的异常处理。
             throw new RuntimeException("更新失败");
         } else {
             return teamDTO.getTeamCode();

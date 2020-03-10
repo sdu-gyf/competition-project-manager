@@ -31,7 +31,6 @@ public class TeamUtils {
                 .andTeamCodeEqualTo(teamCode);
         int result = teamMapperNew.deleteByExample(teamExample);
         if (result != 1) {
-            // TODO: 2020/3/9 删除失败 异常处理
             throw new RuntimeException("删除失败或该队伍不存在");
         }
         return null;
