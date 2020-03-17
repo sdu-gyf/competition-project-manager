@@ -1,6 +1,7 @@
 package cn.edu.sdu.ise.labs.controller;
 
 import cn.edu.sdu.ise.labs.dto.TeamDTO;
+import cn.edu.sdu.ise.labs.dto.TeamQueryDTO;
 import cn.edu.sdu.ise.labs.model.ResultContext;
 import cn.edu.sdu.ise.labs.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,16 @@ public class TeamController {
     @GetMapping("list")
     public ResultContext listTeam(String teamName,
                                   String province,
-                                  String contact) {
+                                  String contact,
+                                  int page,
+                                  int pageSize) {
 
-        TeamDTO teamDTO = new TeamDTO();
+        TeamQueryDTO teamDTO = new TeamQueryDTO();
         teamDTO.setTeamName(teamName);
         teamDTO.setProvince(province);
         teamDTO.setContact(contact);
+        teamDTO.setPage(page);
+        teamDTO.setPageSize(pageSize);
         return ResultContext.returnSuccess(teamService.listTeam(teamDTO));
     }
 

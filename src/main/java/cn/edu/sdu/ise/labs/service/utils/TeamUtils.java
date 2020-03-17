@@ -1,6 +1,9 @@
 package cn.edu.sdu.ise.labs.service.utils;
 
+import cn.edu.sdu.ise.labs.dao.AthleteMapper;
 import cn.edu.sdu.ise.labs.dao.TeamMapper;
+import cn.edu.sdu.ise.labs.model.Athlete;
+import cn.edu.sdu.ise.labs.model.AthleteExample;
 import cn.edu.sdu.ise.labs.model.Team;
 import cn.edu.sdu.ise.labs.model.TeamExample;
 import cn.edu.sdu.ise.labs.utils.FormatUtils;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 public class TeamUtils {
@@ -17,15 +21,27 @@ public class TeamUtils {
     @Autowired
     private TeamMapper teamMapper;
 
+    @Autowired
+    private AthleteMapper athleteMapper;
+
     private static TeamMapper teamMapperNew;
+
+    private static AthleteMapper athleteMapperNew;
 
     @PostConstruct
     public void init() {
         teamMapperNew = teamMapper;
+        athleteMapperNew = athleteMapper;
     }
 
     public static String delete(String teamCode) {
-        // TODO: 2020/3/10 当有运动员当时候不能删除队伍
+        AthleteExample athleteExample = new AthleteExample();
+        athleteExample.createCriteria()
+                .andTeamCodeEqualTo(teamCode);
+        List<Athlete> athleteList = athleteMapperNew.selectByExample(athleteExample);
+        if (athleteList != null || athleteList.size() != 0) {
+            throw new RuntimeException("删除失败,该队伍有运动员");
+        }
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamCodeEqualTo(teamCode);

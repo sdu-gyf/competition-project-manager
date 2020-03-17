@@ -1,26 +1,39 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
+import cn.edu.sdu.ise.labs.constant.PrefixConstant;
+import cn.edu.sdu.ise.labs.dao.TeamExtMapper;
 import cn.edu.sdu.ise.labs.dao.TeamMapper;
 import cn.edu.sdu.ise.labs.dto.TeamDTO;
+import cn.edu.sdu.ise.labs.dto.TeamQueryDTO;
+import cn.edu.sdu.ise.labs.model.Page;
 import cn.edu.sdu.ise.labs.model.Team;
 import cn.edu.sdu.ise.labs.model.TeamExample;
+import cn.edu.sdu.ise.labs.model.TeamExtExample;
+import cn.edu.sdu.ise.labs.service.KeyMaxValueService;
 import cn.edu.sdu.ise.labs.service.TeamService;
 import cn.edu.sdu.ise.labs.service.utils.TeamUtils;
+import cn.edu.sdu.ise.labs.utils.PageUtils;
+import cn.edu.sdu.ise.labs.utils.TokenContextHolder;
 import cn.edu.sdu.ise.labs.vo.TeamVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 
 @Service
 public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamMapper teamMapper;
+
+    @Autowired
+    private TeamExtMapper teamExtMapper;
+
+    @Autowired
+    private KeyMaxValueService keyMaxValueService;
 
     @Override
     public TeamVO getTeam(String teamCode) {
@@ -39,22 +52,33 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamVO> listTeam(TeamDTO teamDTO) {
-        // TODO: 2020/3/10  当teamName province contact为空的时候模糊查询 此时分页 增加对各项参数非空以及合法性的查验。
-        TeamExample teamExample = new TeamExample();
+    public Page<TeamVO> listTeam(TeamQueryDTO queryDTO) {
+        if (queryDTO == null) {
+            queryDTO = new TeamQueryDTO();
+        }
+        TeamExtExample teamExample = new TeamExtExample();
+        teamExample.setOrderByClause("id");
         teamExample.createCriteria()
-                .andTeamNameEqualTo(teamDTO.getTeamName())
-                .andProvinceEqualTo(teamDTO.getProvince())
-                .andContactEqualTo(teamDTO.getContact());
-        List<Team> teamList = teamMapper.selectByExample(teamExample);
-        return teamList.stream()
-                .map(TeamUtils::convertToVO)
-                .collect(Collectors.toList());
+                .andTeamNameLike(queryDTO.getTeamName())
+                .andProvinceLike(queryDTO.getProvince())
+                .andContactLike(queryDTO.getContact());
+        List<Team> teamRawList = teamExtMapper.selectByExample(teamExample);
+        PageUtils pageUtils = new PageUtils(queryDTO.getPage(), queryDTO.getPageSize(), teamRawList.size());
+        Page<TeamVO> pageData = new Page<>(pageUtils.getPage(), pageUtils.getPageSize(), pageUtils.getTotal(), new ArrayList<>());
+        if (teamRawList.size() == 0) {
+            return pageData;
+        }
+        teamExample.setStartRow((queryDTO.getPage() - 1) * queryDTO.getPageSize());
+        teamExample.setPageSize(queryDTO.getPageSize());
+        List<Team> teamList = teamExtMapper.selectByExample(teamExample);
+        for (Team team : teamList) {
+            pageData.getList().add(TeamUtils.convertToVO(team));
+        }
+        return pageData;
     }
 
     @Override
     public String addTeam(TeamDTO teamDTO) {
-        // TODO: 2020/3/10 增加对各项参数非空以及合法性的查验，改进随机生成teamCode算法。
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamNameEqualTo(teamDTO.getTeamName());
@@ -64,13 +88,8 @@ public class TeamServiceImpl implements TeamService {
         } else {
             Team team = new Team();
             BeanUtils.copyProperties(teamDTO, team);
-            Date date = new Date();
-            team.setCreatedAt(date);
-            team.setUpdatedAt(date);
-            team.setCreatedBy("admin");
-            team.setUpdatedBy("admin");
-            String rdm = String.valueOf(Math.abs(new Random().nextInt()));
-            String teamCode = teamDTO.getTeamName() + rdm;
+            TokenContextHolder.formatInsert(team);
+            String teamCode = keyMaxValueService.generateBusinessCode(PrefixConstant.TEAM);
             team.setTeamCode(teamCode);
             int result = teamMapper.insert(team);
             if (result != 1) {

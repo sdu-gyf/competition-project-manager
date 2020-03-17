@@ -1,6 +1,8 @@
 package cn.edu.sdu.ise.labs.service;
 
 import cn.edu.sdu.ise.labs.dto.TeamDTO;
+import cn.edu.sdu.ise.labs.dto.TeamQueryDTO;
+import cn.edu.sdu.ise.labs.model.Page;
 import cn.edu.sdu.ise.labs.vo.TeamVO;
 
 import java.util.List;
@@ -15,10 +17,10 @@ public interface TeamService {
     TeamVO getTeam(String teamCode);
 
     /**
-     * @param teamDTO
+     * @param queryDTO
      * @return 根据检索条件查询参赛队伍表（team），返回结果记录列表
      */
-    List<TeamVO> listTeam(TeamDTO teamDTO);
+    Page<TeamVO> listTeam(TeamQueryDTO queryDTO);
 
     /**
      * 1、	校验代表队名称的唯一性，若存在报错“队伍名称已经存在”
