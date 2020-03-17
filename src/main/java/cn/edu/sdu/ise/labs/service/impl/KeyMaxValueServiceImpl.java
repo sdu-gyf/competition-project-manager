@@ -1,6 +1,6 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
-import cn.edu.sdu.ise.labs.dao.KeyMaxValueMapper;
+import cn.edu.sdu.ise.labs.dao.KeyMaxValueExtMapper;
 import cn.edu.sdu.ise.labs.model.KeyMaxValue;
 import cn.edu.sdu.ise.labs.model.Token;
 import cn.edu.sdu.ise.labs.service.KeyMaxValueService;
@@ -20,7 +20,7 @@ import java.util.Date;
 @Service
 public class KeyMaxValueServiceImpl implements KeyMaxValueService {
     @Autowired
-    private KeyMaxValueMapper keyMaxValueMapper;
+    private KeyMaxValueExtMapper keyMaxValueExtMapper;
     private final int INIT_VALUE = 1;
     private final int MAX_VALUE = 9999;
 
@@ -41,8 +41,8 @@ public class KeyMaxValueServiceImpl implements KeyMaxValueService {
         keyMaxValue.setKeyPrefix(keyPrefix);
         keyMaxValue.setTenantCode(token.getTenantCode());
         keyMaxValue.setUpdatedAt(new Date());
-        keyMaxValueMapper.insertAndUpdate(keyPrefix, datePart, INIT_VALUE, token.getTenantCode());
-        keyMaxValue = keyMaxValueMapper.getKeyValue(keyPrefix, datePart, token.getTenantCode());
+        keyMaxValueExtMapper.insertAndUpdate(keyPrefix, datePart, INIT_VALUE, token.getTenantCode());
+        keyMaxValue = keyMaxValueExtMapper.getKeyValue(keyPrefix, datePart, token.getTenantCode());
         if (keyMaxValue.getCurrentValue() > MAX_VALUE) {
             throw new RuntimeException("业务主键序数值超过了9999，请明天再来操作该业务");
         }

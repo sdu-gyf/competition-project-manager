@@ -4,25 +4,19 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
- * 描述：无用类
- *
- * @author 高逸飞
- * @date 2020-3-5
- */
 @Data
-public class Department {
+public class Team {
     private Integer id;
 
-    private String tenantCode;
+    private String teamCode;
 
-    private String departmentCode;
+    private String teamName;
 
-    private String departmentName;
+    private String province;
 
     private String contact;
 
-    private String contactPhone;
+    private String phone;
 
     private String description;
 
@@ -33,7 +27,5 @@ public class Department {
     private String createdBy;
 
     private String updatedBy;
-
-    private Byte deleted;
 
 }
