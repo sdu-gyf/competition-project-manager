@@ -96,5 +96,40 @@
         </if>
     </select>
 
+    <!-- 获取队伍(分页) -->
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from team
+        <where>
+            <if test="queryDTO.teamName != null">
+                team_name like #{queryDTO.teamName}
+            </if>
+            <if test="queryDTO.contact != null">
+                contact like #{queryDTO.contact}
+            </if>
+            <if test="queryDTO.province != null">
+                province like #{queryDTO.province}
+            </if>
+        </where>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="count" resultType="integer">
+        select count(*)
+        from team
+        <where>
+            <if test="queryDTO.teamName != null">
+                team_name like #{queryDTO.teamName}
+            </if>
+            <if test="queryDTO.contact != null">
+                contact like #{queryDTO.contact}
+            </if>
+            <if test="queryDTO.province != null">
+                province like #{queryDTO.province}
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

@@ -8,10 +8,10 @@ import cn.edu.sdu.ise.labs.dto.TeamQueryDTO;
 import cn.edu.sdu.ise.labs.model.Page;
 import cn.edu.sdu.ise.labs.model.Team;
 import cn.edu.sdu.ise.labs.model.TeamExample;
-import cn.edu.sdu.ise.labs.model.TeamExtExample;
 import cn.edu.sdu.ise.labs.service.KeyMaxValueService;
 import cn.edu.sdu.ise.labs.service.TeamService;
 import cn.edu.sdu.ise.labs.service.utils.TeamUtils;
+import cn.edu.sdu.ise.labs.utils.FormatUtils;
 import cn.edu.sdu.ise.labs.utils.PageUtils;
 import cn.edu.sdu.ise.labs.utils.TokenContextHolder;
 import cn.edu.sdu.ise.labs.vo.TeamVO;
@@ -56,21 +56,22 @@ public class TeamServiceImpl implements TeamService {
         if (queryDTO == null) {
             queryDTO = new TeamQueryDTO();
         }
-        TeamExtExample teamExample = new TeamExtExample();
-        teamExample.setOrderByClause("id");
-        teamExample.createCriteria()
-                .andTeamNameLike(queryDTO.getTeamName())
-                .andProvinceLike(queryDTO.getProvince())
-                .andContactLike(queryDTO.getContact());
-        List<Team> teamRawList = teamExtMapper.selectByExample(teamExample);
-        PageUtils pageUtils = new PageUtils(queryDTO.getPage(), queryDTO.getPageSize(), teamRawList.size());
+        if (queryDTO.getTeamName() != null) {
+            queryDTO.setProvince(FormatUtils.makeFuzzySearchTerm(queryDTO.getProvince()));
+        }
+        if (queryDTO.getTeamName() != null) {
+            queryDTO.setTeamName(FormatUtils.makeFuzzySearchTerm(queryDTO.getTeamName()));
+        }
+        if (queryDTO.getContact() != null) {
+            queryDTO.setContact(FormatUtils.makeFuzzySearchTerm(queryDTO.getContact()));
+        }
+        Integer size = teamExtMapper.count(queryDTO);
+        PageUtils pageUtils = new PageUtils(queryDTO.getPage(), queryDTO.getPageSize(), size);
         Page<TeamVO> pageData = new Page<>(pageUtils.getPage(), pageUtils.getPageSize(), pageUtils.getTotal(), new ArrayList<>());
-        if (teamRawList.size() == 0) {
+        if (size == 0) {
             return pageData;
         }
-        teamExample.setStartRow((queryDTO.getPage() - 1) * queryDTO.getPageSize());
-        teamExample.setPageSize(queryDTO.getPageSize());
-        List<Team> teamList = teamExtMapper.selectByExample(teamExample);
+        List<Team> teamList = teamExtMapper.list(queryDTO, pageUtils.getOffset(), pageUtils.getLimit());
         for (Team team : teamList) {
             pageData.getList().add(TeamUtils.convertToVO(team));
         }

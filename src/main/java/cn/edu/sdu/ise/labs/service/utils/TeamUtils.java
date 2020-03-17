@@ -39,7 +39,7 @@ public class TeamUtils {
         athleteExample.createCriteria()
                 .andTeamCodeEqualTo(teamCode);
         List<Athlete> athleteList = athleteMapperNew.selectByExample(athleteExample);
-        if (athleteList != null || athleteList.size() != 0) {
+        if (athleteList.size() > 0) {
             throw new RuntimeException("删除失败,该队伍有运动员");
         }
         TeamExample teamExample = new TeamExample();

@@ -21,20 +21,9 @@ public class TeamController {
         return ResultContext.returnSuccess(teamService.getTeam(teamCode));
     }
 
-    @GetMapping("list")
-    public ResultContext listTeam(String teamName,
-                                  String province,
-                                  String contact,
-                                  int page,
-                                  int pageSize) {
-
-        TeamQueryDTO teamDTO = new TeamQueryDTO();
-        teamDTO.setTeamName(teamName);
-        teamDTO.setProvince(province);
-        teamDTO.setContact(contact);
-        teamDTO.setPage(page);
-        teamDTO.setPageSize(pageSize);
-        return ResultContext.returnSuccess(teamService.listTeam(teamDTO));
+    @PostMapping("list")
+    public ResultContext listTeam(@RequestBody TeamQueryDTO teamQueryDTO) {
+        return ResultContext.returnSuccess(teamService.listTeam(teamQueryDTO));
     }
 
     @PostMapping("add")
