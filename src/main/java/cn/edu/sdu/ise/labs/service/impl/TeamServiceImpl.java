@@ -89,6 +89,9 @@ public class TeamServiceImpl implements TeamService {
             Team team = new Team();
             BeanUtils.copyProperties(teamDTO, team);
             TokenContextHolder.formatInsert(team);
+            Date date = new Date();
+            team.setCreatedAt(date);
+            team.setUpdatedAt(date);
             String teamCode = keyMaxValueService.generateBusinessCode(PrefixConstant.TEAM);
             team.setTeamCode(teamCode);
             int result = teamMapper.insert(team);
@@ -104,8 +107,8 @@ public class TeamServiceImpl implements TeamService {
     public String updateTeam(TeamDTO teamDTO) {
         Team team = new Team();
         BeanUtils.copyProperties(teamDTO, team);
+        TokenContextHolder.formatUpdate(team);
         team.setUpdatedAt(new Date());
-        team.setUpdatedBy("new admin");
         TeamExample teamExample = new TeamExample();
         teamExample.createCriteria()
                 .andTeamCodeEqualTo(teamDTO.getTeamCode());
@@ -119,6 +122,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public int deleteTeam(List<String> teamCodes) {
+        TokenContextHolder.getToken();
         return (int) teamCodes.stream()
                 .map(TeamUtils::delete).count();
     }

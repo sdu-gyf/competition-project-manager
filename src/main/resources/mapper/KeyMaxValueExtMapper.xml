@@ -12,94 +12,18 @@
     <sql id="Base_Column_List">
         id, tenant_code, key_prefix, date_part, current_value, updated_at
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+
+    <!-- 根据前缀查询当前值 -->
+    <select id="getKeyValue" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from key_max_value
-        where id = #{id,jdbcType=INTEGER}
+        where key_prefix = #{keyPrefix} and date_part=#{datePart} and tenant_code = #{tenantCode}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from key_max_value
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-    <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-        insert into key_max_value (id, tenant_code, key_prefix,
-                                   date_part, current_value, updated_at)
-        values (#{id,jdbcType=INTEGER}, #{tenantCode,jdbcType=VARCHAR}, #{keyPrefix,jdbcType=CHAR},
-                #{datePart,jdbcType=CHAR}, #{currentValue,jdbcType=INTEGER}, #{updatedAt,jdbcType=TIMESTAMP})
+
+    <insert id="insertAndUpdate" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
+        insert into key_max_value(tenant_code, key_prefix, date_part, current_value)
+        values (#{tenantCode}, #{keyPrefix}, #{datePart}, #{currentValue})
+        on duplicate key update current_value = current_value + 1
     </insert>
-    <insert id="insertSelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-        insert into key_max_value
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="tenantCode != null">
-                tenant_code,
-            </if>
-            <if test="keyPrefix != null">
-                key_prefix,
-            </if>
-            <if test="datePart != null">
-                date_part,
-            </if>
-            <if test="currentValue != null">
-                current_value,
-            </if>
-            <if test="updatedAt != null">
-                updated_at,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="tenantCode != null">
-                #{tenantCode,jdbcType=VARCHAR},
-            </if>
-            <if test="keyPrefix != null">
-                #{keyPrefix,jdbcType=CHAR},
-            </if>
-            <if test="datePart != null">
-                #{datePart,jdbcType=CHAR},
-            </if>
-            <if test="currentValue != null">
-                #{currentValue,jdbcType=INTEGER},
-            </if>
-            <if test="updatedAt != null">
-                #{updatedAt,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-        update key_max_value
-        <set>
-            <if test="tenantCode != null">
-                tenant_code = #{tenantCode,jdbcType=VARCHAR},
-            </if>
-            <if test="keyPrefix != null">
-                key_prefix = #{keyPrefix,jdbcType=CHAR},
-            </if>
-            <if test="datePart != null">
-                date_part = #{datePart,jdbcType=CHAR},
-            </if>
-            <if test="currentValue != null">
-                current_value = #{currentValue,jdbcType=INTEGER},
-            </if>
-            <if test="updatedAt != null">
-                updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.KeyMaxValue">
-        update key_max_value
-        set tenant_code   = #{tenantCode,jdbcType=VARCHAR},
-            key_prefix    = #{keyPrefix,jdbcType=CHAR},
-            date_part     = #{datePart,jdbcType=CHAR},
-            current_value = #{currentValue,jdbcType=INTEGER},
-            updated_at    = #{updatedAt,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
 </mapper>
