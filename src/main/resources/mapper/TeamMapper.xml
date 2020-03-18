@@ -78,37 +78,60 @@
         id, team_code, team_name, province, contact, phone, description, created_at, updated_at,
     created_by, updated_by
     </sql>
-    <select id="selectByExample" parameterType="cn.edu.sdu.ise.labs.model.TeamExample" resultMap="BaseResultMap">
-        select
-        <if test="distinct">
-            distinct
-        </if>
-        <include refid="Base_Column_List"/>
-        from team
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    <!-- 获取队伍(分页) -->
+    <select id="list" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from team
-        where id = #{id,jdbcType=INTEGER}
+        <where>
+            <if test="queryDTO.teamName != null">
+                team_name like #{queryDTO.teamName}
+            </if>
+            <if test="queryDTO.contact != null">
+                contact like #{queryDTO.contact}
+            </if>
+            <if test="queryDTO.province != null">
+                province like #{queryDTO.province}
+            </if>
+        </where>
+        limit #{offset}, #{limit}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
+
+    <select id="getByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
         from team
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-    <delete id="deleteByExample" parameterType="cn.edu.sdu.ise.labs.model.TeamExample">
-        delete from team
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
+        <where>
+            team_code like #{teamCode}
+        </where>
+    </select>
+
+    <select id="listByTeamName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from team
+        <where>
+            team_name like #{teamName}
+        </where>
+    </select>
+
+    <select id="count" resultType="integer">
+        select count(*)
+        from team
+        <where>
+            <if test="queryDTO.teamName != null">
+                team_name like #{queryDTO.teamName}
+            </if>
+            <if test="queryDTO.contact != null">
+                contact like #{queryDTO.contact}
+            </if>
+            <if test="queryDTO.province != null">
+                province like #{queryDTO.province}
+            </if>
+        </where>
+    </select>
+
     <insert id="insert" parameterType="cn.edu.sdu.ise.labs.model.Team">
         insert into team (id, team_code, team_name,
                           province, contact, phone,
@@ -119,191 +142,22 @@
                 #{description,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP},
                 #{createdBy,jdbcType=VARCHAR}, #{updatedBy,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="cn.edu.sdu.ise.labs.model.Team">
-        insert into team
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="teamCode != null">
-                team_code,
-            </if>
-            <if test="teamName != null">
-                team_name,
-            </if>
-            <if test="province != null">
-                province,
-            </if>
-            <if test="contact != null">
-                contact,
-            </if>
-            <if test="phone != null">
-                phone,
-            </if>
-            <if test="description != null">
-                description,
-            </if>
-            <if test="createdAt != null">
-                created_at,
-            </if>
-            <if test="updatedAt != null">
-                updated_at,
-            </if>
-            <if test="createdBy != null">
-                created_by,
-            </if>
-            <if test="updatedBy != null">
-                updated_by,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="teamCode != null">
-                #{teamCode,jdbcType=VARCHAR},
-            </if>
-            <if test="teamName != null">
-                #{teamName,jdbcType=VARCHAR},
-            </if>
-            <if test="province != null">
-                #{province,jdbcType=VARCHAR},
-            </if>
-            <if test="contact != null">
-                #{contact,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                #{description,jdbcType=VARCHAR},
-            </if>
-            <if test="createdAt != null">
-                #{createdAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updatedAt != null">
-                #{updatedAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createdBy != null">
-                #{createdBy,jdbcType=VARCHAR},
-            </if>
-            <if test="updatedBy != null">
-                #{updatedBy,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="cn.edu.sdu.ise.labs.model.TeamExample" resultType="java.lang.Integer">
-        select count(*) from team
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update team
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=INTEGER},
-            </if>
-            <if test="record.teamCode != null">
-                team_code = #{record.teamCode,jdbcType=VARCHAR},
-            </if>
-            <if test="record.teamName != null">
-                team_name = #{record.teamName,jdbcType=VARCHAR},
-            </if>
-            <if test="record.province != null">
-                province = #{record.province,jdbcType=VARCHAR},
-            </if>
-            <if test="record.contact != null">
-                contact = #{record.contact,jdbcType=VARCHAR},
-            </if>
-            <if test="record.phone != null">
-                phone = #{record.phone,jdbcType=VARCHAR},
-            </if>
-            <if test="record.description != null">
-                description = #{record.description,jdbcType=VARCHAR},
-            </if>
-            <if test="record.createdAt != null">
-                created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.updatedAt != null">
-                updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.createdBy != null">
-                created_by = #{record.createdBy,jdbcType=VARCHAR},
-            </if>
-            <if test="record.updatedBy != null">
-                updated_by = #{record.updatedBy,jdbcType=VARCHAR},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update team
-        set id = #{record.id,jdbcType=INTEGER},
-        team_code = #{record.teamCode,jdbcType=VARCHAR},
-        team_name = #{record.teamName,jdbcType=VARCHAR},
-        province = #{record.province,jdbcType=VARCHAR},
-        contact = #{record.contact,jdbcType=VARCHAR},
-        phone = #{record.phone,jdbcType=VARCHAR},
-        description = #{record.description,jdbcType=VARCHAR},
-        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
-        updated_at = #{record.updatedAt,jdbcType=TIMESTAMP},
-        created_by = #{record.createdBy,jdbcType=VARCHAR},
-        updated_by = #{record.updatedBy,jdbcType=VARCHAR}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.edu.sdu.ise.labs.model.Team">
-        update team
-        <set>
-            <if test="teamCode != null">
-                team_code = #{teamCode,jdbcType=VARCHAR},
-            </if>
-            <if test="teamName != null">
-                team_name = #{teamName,jdbcType=VARCHAR},
-            </if>
-            <if test="province != null">
-                province = #{province,jdbcType=VARCHAR},
-            </if>
-            <if test="contact != null">
-                contact = #{contact,jdbcType=VARCHAR},
-            </if>
-            <if test="phone != null">
-                phone = #{phone,jdbcType=VARCHAR},
-            </if>
-            <if test="description != null">
-                description = #{description,jdbcType=VARCHAR},
-            </if>
-            <if test="createdAt != null">
-                created_at = #{createdAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updatedAt != null">
-                updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createdBy != null">
-                created_by = #{createdBy,jdbcType=VARCHAR},
-            </if>
-            <if test="updatedBy != null">
-                updated_by = #{updatedBy,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
+
+    <delete id="deleteByCode">
+        delete
+        from team
+        where team_code = #{teamCode}
+    </delete>
+
     <update id="updateByPrimaryKey" parameterType="cn.edu.sdu.ise.labs.model.Team">
         update team
-        set team_code   = #{teamCode,jdbcType=VARCHAR},
-            team_name   = #{teamName,jdbcType=VARCHAR},
-            province    = #{province,jdbcType=VARCHAR},
+        set team_name   = #{teamName,jdbcType=VARCHAR},
             contact     = #{contact,jdbcType=VARCHAR},
             phone       = #{phone,jdbcType=VARCHAR},
             description = #{description,jdbcType=VARCHAR},
-            created_at  = #{createdAt,jdbcType=TIMESTAMP},
+            updated_by  = #{updatedBy,jdbcType=VARCHAR},
             updated_at  = #{updatedAt,jdbcType=TIMESTAMP},
-            created_by  = #{createdBy,jdbcType=VARCHAR},
-            updated_by  = #{updatedBy,jdbcType=VARCHAR}
+            province    = #{province,jdbcType=VARCHAR}
         where id = #{id,jdbcType=INTEGER}
     </update>
 

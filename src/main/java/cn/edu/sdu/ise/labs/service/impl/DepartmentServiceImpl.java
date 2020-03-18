@@ -1,7 +1,7 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
 import cn.edu.sdu.ise.labs.constant.PrefixConstant;
-import cn.edu.sdu.ise.labs.dao.DepartmentExtMapper;
+import cn.edu.sdu.ise.labs.dao.DepartmentMapper;
 import cn.edu.sdu.ise.labs.dto.DepartmentDTO;
 import cn.edu.sdu.ise.labs.dto.DepartmentQueryDTO;
 import cn.edu.sdu.ise.labs.model.Department;
@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
-    private DepartmentExtMapper departmentExtMapper;
+    private DepartmentMapper departmentMapper;
 
     @Autowired
     private KeyMaxValueService keyMaxValueService;
@@ -49,7 +49,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         queryDTO.setDepartmentName(FormatUtils.makeFuzzySearchTerm(queryDTO.getDepartmentName()));
         Token token = TokenContextHolder.getToken();
 
-        Integer size = departmentExtMapper.count(queryDTO, token.getTenantCode());
+        Integer size = departmentMapper.count(queryDTO, token.getTenantCode());
         PageUtils pageUtils = new PageUtils(queryDTO.getPage(), queryDTO.getPageSize(), size);
         Page<DepartmentVO> pageData = new Page<>(pageUtils.getPage(), pageUtils.getPageSize(), pageUtils.getTotal(), new ArrayList<>());
         if (size == 0) {
@@ -57,7 +57,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             return pageData;
         }
 
-        List<Department> list = departmentExtMapper.list(queryDTO, pageUtils.getOffset(), pageUtils.getLimit(), token.getTenantCode());
+        List<Department> list = departmentMapper.list(queryDTO, pageUtils.getOffset(), pageUtils.getLimit(), token.getTenantCode());
         for (Department department : list) {
             pageData.getList().add(DepartmentUtils.convertToVO(department));
         }
@@ -85,7 +85,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         // 将token相关信息填入department对象
         TokenContextHolder.formatInsert(department);
         // 调用DAO方法保存到数据库表
-        departmentExtMapper.insert(department);
+        departmentMapper.insert(department);
         return department.getDepartmentCode();
     }
 
@@ -101,12 +101,12 @@ public class DepartmentServiceImpl implements DepartmentService {
         Token token = TokenContextHolder.getToken();
         DepartmentUtils.validateDepartment(departmentDTO);
         Assert.hasText(departmentDTO.getDepartmentCode(), "部门代码不能为空");
-        Department department = departmentExtMapper.getByCode(departmentDTO.getDepartmentCode(), token.getTenantCode());
+        Department department = departmentMapper.getByCode(departmentDTO.getDepartmentCode(), token.getTenantCode());
         Assert.notNull(department, "为找到部门，代码为：" + departmentDTO.getDepartmentCode());
 
         BeanUtils.copyProperties(departmentDTO, department);
         department.setUpdatedBy(token.getTenantCode());
-        departmentExtMapper.updateByPrimaryKey(department);
+        departmentMapper.updateByPrimaryKey(department);
         return department.getDepartmentCode();
     }
 
@@ -119,7 +119,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void deleteByCodes(List<String> codeList) {
         Assert.notEmpty(codeList, "部门编码列表不能为空");
         Token token = TokenContextHolder.getToken();
-        departmentExtMapper.deleteByCodes(codeList, token.getTeacherCode(), token.getTenantCode());
+        departmentMapper.deleteByCodes(codeList, token.getTeacherCode(), token.getTenantCode());
     }
 
     /**
@@ -135,7 +135,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
 
         Token token = TokenContextHolder.getToken();
-        List<Department> departmentList = departmentExtMapper.listByCodes(codeList, token.getTenantCode());
+        List<Department> departmentList = departmentMapper.listByCodes(codeList, token.getTenantCode());
         return departmentList.stream()
                 .map(item -> DepartmentUtils.convertToVO(item))
                 .collect(Collectors.toMap(DepartmentVO::getDepartmentCode, Function.identity()));
@@ -151,7 +151,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentVO> listByName(String departmentName) {
         Token token = TokenContextHolder.getToken();
         departmentName = FormatUtils.makeFuzzySearchTerm(departmentName);
-        List<Department> departmentList = departmentExtMapper.listByName(departmentName, token.getTenantCode());
+        List<Department> departmentList = departmentMapper.listByName(departmentName, token.getTenantCode());
         return departmentList.stream()
                 .map(item -> DepartmentUtils.convertToVO(item))
                 .collect(Collectors.toList());
