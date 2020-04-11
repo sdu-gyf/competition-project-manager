@@ -3,6 +3,7 @@ package cn.edu.sdu.ise.labs.controller;
 import cn.edu.sdu.ise.labs.model.ResultContext;
 import cn.edu.sdu.ise.labs.model.Token;
 import cn.edu.sdu.ise.labs.service.TokenService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,14 @@ public class SystemController {
         return ResultContext.returnSuccess(token);
     }
 
+    @GetMapping("callback")
+    public ResultContext callback(@Param("code") String code) {
+        Token token = tokenService.githubLogin(code);
+        return ResultContext.returnSuccess(token);
+    }
+
     @GetMapping("ping")
+
     public ResultContext ping() {
         return ResultContext.returnSuccess("done");
     }

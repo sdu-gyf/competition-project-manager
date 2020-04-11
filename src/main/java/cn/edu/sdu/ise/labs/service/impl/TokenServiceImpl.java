@@ -1,7 +1,10 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
+import cn.edu.sdu.ise.labs.dto.GithubAccessTokenDTO;
 import cn.edu.sdu.ise.labs.model.Token;
+import cn.edu.sdu.ise.labs.service.GithubUserService;
 import cn.edu.sdu.ise.labs.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,6 +26,9 @@ public class TokenServiceImpl implements TokenService {
     @Value("${timeout}")
     private int timeout;
 
+    @Autowired
+    private GithubUserService githubUserService;
+
     private Map<String, Token> tokenMap = new ConcurrentHashMap<>(1 << 8);
 
     /**
@@ -41,6 +47,16 @@ public class TokenServiceImpl implements TokenService {
         token.setTeacherCode("TE000001");
         token.setLastAction(new Date());
         tokenMap.put(token.getAccessToken(), token);
+        return token;
+    }
+
+    @Override
+    public Token githubLogin(String code) {
+        Token token = new Token();
+        GithubAccessTokenDTO githubAccessTokenDTO = new GithubAccessTokenDTO();
+        githubAccessTokenDTO.setCode(code);
+        String githubAccessToken = githubUserService.getGithubAccessToken(githubAccessTokenDTO);
+        token.setAccessToken(makeToken());
         return token;
     }
 

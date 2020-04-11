@@ -42,6 +42,8 @@
         <version>2.1.1.RELEASE</version>
       </dependency>
 
+
+
     </dependencies>
 
   </dependencyManagement>
@@ -132,6 +134,12 @@
       <artifactId>annotations</artifactId>
       <version>13.0</version>
       <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.3.1</version>
     </dependency>
 
   </dependencies>

@@ -17,6 +17,14 @@ public interface TokenService {
     Token login(String workCode, String password);
 
     /**
+     * Github授权登录
+     *
+     * @param code 登陆成功GitHub返回的code
+     * @return 令牌信息
+     */
+    Token githubLogin(String code);
+
+    /**
      * 根据token获取令牌信息
      *
      * @param accessToken token
