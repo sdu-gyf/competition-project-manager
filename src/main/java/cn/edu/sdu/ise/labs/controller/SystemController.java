@@ -2,6 +2,7 @@ package cn.edu.sdu.ise.labs.controller;
 
 import cn.edu.sdu.ise.labs.model.ResultContext;
 import cn.edu.sdu.ise.labs.model.Token;
+import cn.edu.sdu.ise.labs.service.GithubUserService;
 import cn.edu.sdu.ise.labs.service.TokenService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class SystemController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private GithubUserService githubUserService;
+
     @GetMapping("login")
     public ResultContext login(String workCode, String password) {
         Token token = tokenService.login(workCode, password);
@@ -32,8 +36,12 @@ public class SystemController {
         return ResultContext.returnSuccess(token);
     }
 
-    @GetMapping("ping")
+    @GetMapping("user")
+    public ResultContext getUser(@Param("accessToken") String accessToken) {
+        return ResultContext.returnSuccess();
+    }
 
+    @GetMapping("ping")
     public ResultContext ping() {
         return ResultContext.returnSuccess("done");
     }

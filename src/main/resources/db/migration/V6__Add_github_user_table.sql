@@ -11,7 +11,7 @@
  Target Server Version : 50645
  File Encoding         : 65001
 
- Date: 12/04/2020 00:10:14
+ Date: 12/04/2020 00:57:02
 */
 
 SET NAMES utf8mb4;
@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `github_user`;
 CREATE TABLE `github_user`
 (
     `id`         int(11)                          NOT NULL COMMENT '主键',
-    `account_id` char(50) COLLATE utf8mb4_bin     NOT NULL,
+    `account_id` bigint(50)                       NOT NULL,
     `name`       varchar(50) COLLATE utf8mb4_bin  NOT NULL,
     `token`      varchar(255) COLLATE utf8mb4_bin NOT NULL,
     `avatar_url` varchar(255) COLLATE utf8mb4_bin NOT NULL,

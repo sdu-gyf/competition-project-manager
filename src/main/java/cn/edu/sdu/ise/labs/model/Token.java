@@ -36,4 +36,8 @@ public class Token {
      * 上次动作
      */
     private Date lastAction;
+    /**
+     * 头像
+     */
+    private String avatarUrl;
 }

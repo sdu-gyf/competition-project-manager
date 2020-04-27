@@ -47,7 +47,7 @@ public class TeamServiceImpl implements TeamService {
         if (queryDTO == null) {
             queryDTO = new TeamQueryDTO();
         }
-        if (queryDTO.getTeamName() != null) {
+        if (queryDTO.getProvince() != null) {
             queryDTO.setProvince(FormatUtils.makeFuzzySearchTerm(queryDTO.getProvince()));
         }
         if (queryDTO.getTeamName() != null) {
@@ -98,7 +98,7 @@ public class TeamServiceImpl implements TeamService {
         Team team = teamMapper.getByCode(teamDTO.getTeamCode());
         Assert.notNull(team, "未找到队伍，代码为：" + teamDTO.getTeamCode());
         BeanUtils.copyProperties(teamDTO, team);
-        team.setUpdatedBy(token.getTenantCode());
+        team.setUpdatedBy(token.getTeacherCode());
         team.setUpdatedAt(new Date());
         teamMapper.updateByPrimaryKey(team);
         return teamDTO.getTeamCode();

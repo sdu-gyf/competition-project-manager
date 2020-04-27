@@ -1,6 +1,7 @@
 package cn.edu.sdu.ise.labs.service.impl;
 
 import cn.edu.sdu.ise.labs.dto.GithubAccessTokenDTO;
+import cn.edu.sdu.ise.labs.model.GithubUser;
 import cn.edu.sdu.ise.labs.model.Token;
 import cn.edu.sdu.ise.labs.service.GithubUserService;
 import cn.edu.sdu.ise.labs.service.TokenService;
@@ -55,8 +56,25 @@ public class TokenServiceImpl implements TokenService {
         Token token = new Token();
         GithubAccessTokenDTO githubAccessTokenDTO = new GithubAccessTokenDTO();
         githubAccessTokenDTO.setCode(code);
+        // 获取github的accessToken
         String githubAccessToken = githubUserService.getGithubAccessToken(githubAccessTokenDTO);
+        // 用accessToken去拿github的用户信息
+        GithubUser githubUser = githubUserService.getGithubUser(githubAccessToken);
+        // 生成本项目的token
+        if(githubUser==null){
+            throw new RuntimeException("Github登陆错误");
+        }
         token.setAccessToken(makeToken());
+        // 老师编码为github返回的唯一用户id
+        token.setTeacherCode(String.valueOf(githubUser.getAccountId()));
+        token.setTenantCode(String.valueOf(githubUser.getAccountId()));
+        // 老师名为github用户名
+        token.setTeacherName(githubUser.getName());
+        githubUser.setToken(token.getAccessToken());
+        // 生产用户或者更新用户信息
+        githubUserService.createOrUpdate(githubUser);
+        token.setAvatarUrl(githubUser.getAvatarUrl());
+        tokenMap.put(token.getAccessToken(), token);
         return token;
     }
 
