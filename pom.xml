@@ -42,6 +42,8 @@
         <version>2.1.1.RELEASE</version>
       </dependency>
 
+
+
     </dependencies>
 
   </dependencyManagement>
@@ -127,6 +129,16 @@
       <artifactId>fastjson</artifactId>
       <version>1.2.47</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+
+
+
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>

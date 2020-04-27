@@ -21,8 +21,8 @@ public class TeamController {
         return ResultContext.returnSuccess(teamService.getTeam(teamCode));
     }
 
-    @PostMapping("list")
-    public ResultContext listTeam(@RequestBody TeamQueryDTO teamQueryDTO) {
+    @GetMapping("list")
+    public ResultContext listTeam(@ModelAttribute TeamQueryDTO teamQueryDTO) {
         return ResultContext.returnSuccess(teamService.listTeam(teamQueryDTO));
     }
 
