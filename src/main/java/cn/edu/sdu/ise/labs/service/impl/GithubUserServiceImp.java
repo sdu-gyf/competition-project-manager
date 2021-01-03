@@ -36,8 +36,6 @@ public class GithubUserServiceImp implements GithubUserService {
         githubAccessTokenDTO.setRedirect_uri(redirectUri);
         githubAccessTokenDTO.setState("1");
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
-
-
         RequestBody body = RequestBody.create(JSON.toJSONString(githubAccessTokenDTO), mediaType);
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")

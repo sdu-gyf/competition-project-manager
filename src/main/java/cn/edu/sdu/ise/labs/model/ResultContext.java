@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author yangqiang
  * @date 2018-10-23
  */
-public class ResultContext<T> {
+public class    ResultContext<T> {
 
     /**
      * 是否成功

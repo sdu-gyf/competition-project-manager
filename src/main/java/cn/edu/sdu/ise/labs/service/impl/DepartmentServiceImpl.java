@@ -137,7 +137,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Token token = TokenContextHolder.getToken();
         List<Department> departmentList = departmentMapper.listByCodes(codeList, token.getTenantCode());
         return departmentList.stream()
-                .map(item -> DepartmentUtils.convertToVO(item))
+                .map(DepartmentUtils::convertToVO)
                 .collect(Collectors.toMap(DepartmentVO::getDepartmentCode, Function.identity()));
     }
 

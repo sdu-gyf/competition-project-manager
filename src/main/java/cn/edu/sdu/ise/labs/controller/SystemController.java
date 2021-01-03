@@ -36,11 +36,6 @@ public class SystemController {
         return ResultContext.returnSuccess(token);
     }
 
-    @GetMapping("user")
-    public ResultContext getUser(@Param("accessToken") String accessToken) {
-        return ResultContext.returnSuccess();
-    }
-
     @GetMapping("ping")
     public ResultContext ping() {
         return ResultContext.returnSuccess("done");
